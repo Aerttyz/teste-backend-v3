@@ -13,8 +13,8 @@ namespace TheatricalPlayersRefactoringKata.Calculators
             _comedyCalculator = comedyCalculator;
         }
 
-        public int CalculateAmount(Performance performance, Play play)
-        {
+        public double CalculateAmount(Performance performance, Play play)
+        {   
             return _tragedyCalculator.CalculateAmount(performance, play) + _comedyCalculator.CalculateAmount(performance, play);
         }
 
