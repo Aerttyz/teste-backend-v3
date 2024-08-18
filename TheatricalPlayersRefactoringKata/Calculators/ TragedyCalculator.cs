@@ -7,12 +7,13 @@ namespace TheatricalPlayersRefactoringKata.Calculators
     {
         public int CalculateAmount(Performance performance, Play play)
         {
-            int result = 40000;
+            int lines = Math.Clamp(play.NumberOfLines, 1000, 4000);
+            int baseAmount = lines / 10;
             if (performance.Audience > 30)
             {
                 result += 1000 * (performance.Audience - 30);
             }
-            return result;
+            return baseAmount;
         }
 
         public int CalculateVolumeCredits(Performance performance, Play play)
