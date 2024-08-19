@@ -123,12 +123,15 @@ namespace TheatricalPlayersRefactoringKata
             statement.Add(new XElement("AmountOwed", FormatCurrency(totalAmount/100.0)));
             statement.Add(new XElement("EarnedCredits", totalVolumeCredits));
             
-            doc.Save("statement.xml");
-
-            string xmlContent = File.ReadAllText("statement.xml");
-            
-
-            return File.ReadAllText("statement.xml");
+        
+            string path = Path.Combine(Path.GetTempPath(), "temp.xml");
+            using (var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write))
+            using (var streamWriter = new StreamWriter(fileStream, Encoding.UTF8))
+            {
+                streamWriter.Write("\ufeff");
+                doc.Save(streamWriter);
+            }
+            return File.ReadAllText(path);
         }
 
         private string FormatCurrency(double amount)
