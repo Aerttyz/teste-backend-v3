@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Xml;
 using System.Xml.Linq;
 using System.Text;
 using TheatricalPlayersRefactoringKata.Calculators;
@@ -68,10 +69,23 @@ namespace TheatricalPlayersRefactoringKata
                 new XElement("Customer", invoice.Customer),
                 new XElement("Items")
             );
-            XDocument doc = new XDocument(
+            var doc = new XDocument(
                 new XDeclaration("1.0", "utf-8", null),
                 statement
             );
+
+            var settings = new XmlWriterSettings
+            {
+                Encoding = Encoding.UTF8,
+                Indent = true
+            };
+
+            var filePath = "statement.txt";
+            using (var writer = XmlWriter.Create(filePath, settings))
+            {
+                doc.Save(writer);
+            } 
+
             foreach (var perf in invoice.Performances)
             {
                 var play = plays[perf.PlayId];
@@ -122,13 +136,10 @@ namespace TheatricalPlayersRefactoringKata
 
             statement.Add(new XElement("AmountOwed", FormatCurrency(totalAmount/100.0)));
             statement.Add(new XElement("EarnedCredits", totalVolumeCredits));
-            
-            doc.Save("statement.xml");
+            doc.Save(filePath);
+            var fileContent = File.ReadAllText(filePath, Encoding.UTF8);
 
-            string xmlContent = File.ReadAllText("statement.xml");
-            
-
-            return File.ReadAllText("statement.xml");
+            return fileContent;
         }
 
         private string FormatCurrency(double amount)
