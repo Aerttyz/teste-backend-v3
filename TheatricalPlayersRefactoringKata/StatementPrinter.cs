@@ -5,6 +5,7 @@ using System.IO;
 using System.Xml.Linq;
 using System.Text;
 using TheatricalPlayersRefactoringKata.Calculators;
+using TheatricalPlayersRefactoringKata.Domain.Entities;
 
 namespace TheatricalPlayersRefactoringKata
 {
